@@ -8,7 +8,7 @@ import { isPlatformBrowser } from '@angular/common';
   templateUrl: './home.component.html'
 })
 export class HomeComponent implements AfterViewInit, OnDestroy {
-  activities = Array.from({ length: 18 }, (_, i) => {
+  activities = Array.from({ length: 31 }, (_, i) => {
     const num = i + 1;
     return `activities/activity${num}.${num === 16 ? 'jpg' : 'png'}`;
   });
