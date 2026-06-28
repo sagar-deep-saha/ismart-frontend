@@ -16,6 +16,7 @@ export class App implements OnInit {
   protected readonly showScrollToTop = signal(false);
   protected readonly isMobileMenuOpen = signal(false);
   protected readonly isLoading = signal(true);
+  protected readonly isFadingOut = signal(false);
 
   toggleMobileMenu() {
     this.isMobileMenuOpen.update(v => !v);
@@ -38,11 +39,12 @@ export class App implements OnInit {
 
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
-      // Simulate loading screen for 3.5 seconds
+      // Keep loading screen for exactly 1s, then transition for 1s (2s total)
       setTimeout(() => {
-        this.isLoading.set(false);
+        // 1. Start crossfade transition
+        this.isFadingOut.set(true);
         
-        // Initialize AOS after loading screen is removed
+        // Initialize AOS slightly after fade starts
         setTimeout(() => {
           AOS.init({
             duration: 800,
@@ -50,9 +52,15 @@ export class App implements OnInit {
             offset: 100,
           });
         }, 100);
-      }, 3500);
+
+        // 2. Remove loading screen from DOM after transition finishes (1s)
+        setTimeout(() => {
+          this.isLoading.set(false);
+        }, 1000);
+      }, 1000);
     } else {
       this.isLoading.set(false);
+      this.isFadingOut.set(true);
     }
   }
 }
