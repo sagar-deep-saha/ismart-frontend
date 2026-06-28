@@ -1,4 +1,4 @@
-<section id="join-us" class="py-20 relative overflow-hidden bg-white" style="margin-top: -120px">
+<section id="join-us" class="py-20 relative overflow-hidden bg-white" style="margin-top: -65px">
   <!-- Abstract background shapes -->
   <div
     class="absolute top-0 right-0 w-[40rem] h-[40rem] bg-ember-orange/5 rounded-full blur-3xl -z-10 translate-x-1/3 -translate-y-1/3 animate-pulse-soft"
@@ -9,7 +9,7 @@
   ></div>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
     <div class="grid lg:grid-cols-2 gap-16 items-center">
-      <div data-aos="fade-right">
+      <div class="hidden lg:block" data-aos="fade-right">
         <div class="inline-flex items-center gap-2 mb-4">
           <span class="w-8 h-[2px] bg-ember-orange"></span>
           <h2 class="text-ember-orange font-bold tracking-widest uppercase text-sm">Partnership</h2>
@@ -72,98 +72,73 @@
         </div>
       </div>
       <div
-        class="glass-card p-10 md:p-12 rounded-[2.5rem] shadow-[0_20px_60px_rgba(45,49,66,0.08)] relative border border-paper/20"
+        class="bg-surface p-10 md:p-12 rounded-[24px] shadow-sm hover:shadow-xl transition-all duration-300 relative border border-border-color"
         data-aos="zoom-in"
         data-aos-delay="300"
       >
-        <!-- Decorative element -->
-        <div
-          class="absolute -top-6 -right-6 w-24 h-24 bg-gradient-to-br from-ember-orange to-brand-cyan rounded-full blur-2xl opacity-50 z-0 animate-pulse-soft"
-        ></div>
         <form class="space-y-6 relative z-10">
           <h4
-            class="text-2xl font-bold text-graphite mb-8"
+            class="font-heading text-2xl font-bold text-text-dark mb-8"
             data-aos="fade-down"
             data-aos-delay="400"
           >
             Submit your application
           </h4>
           <div class="grid md:grid-cols-2 gap-6">
-            <div class="relative pt-6" data-aos="fade-up" data-aos-delay="500">
+            <div data-aos="fade-up" data-aos-delay="500">
+              <label for="name" class="block font-sans text-text-dark font-semibold text-sm mb-2">Full Name</label>
               <input
                 type="text"
                 id="name"
-                class="peer w-full px-5 py-4 rounded-[20px] border border-paper/40 bg-pearl text-graphite focus:ring-4 focus:ring-ember-orange/20 focus:border-ember-orange outline-none transition-all duration-300 shadow-sm hover:shadow-none border border-paper placeholder-transparent"
+                class="w-full px-5 py-4 rounded-[16px] border border-border-color bg-white text-text-dark focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all duration-300 shadow-sm"
                 placeholder="John Doe"
               />
-              <label
-                for="name"
-                class="absolute left-5 top-10 text-stone font-semibold text-sm transition-all duration-300 peer-placeholder-shown:text-base peer-placeholder-shown:top-10 peer-placeholder-shown:text-stone/60 peer-focus:top-0 peer-focus:text-sm peer-focus:text-ember-orange -translate-y-full"
-                >Full Name</label
-              >
             </div>
-            <div class="relative pt-6" data-aos="fade-up" data-aos-delay="600">
+            <div data-aos="fade-up" data-aos-delay="600">
+              <label for="email" class="block font-sans text-text-dark font-semibold text-sm mb-2">Work Email</label>
               <input
                 type="email"
                 id="email"
-                class="peer w-full px-5 py-4 rounded-[20px] border border-paper/40 bg-pearl text-graphite focus:ring-4 focus:ring-ember-orange/20 focus:border-ember-orange outline-none transition-all duration-300 shadow-sm hover:shadow-none border border-paper placeholder-transparent"
+                class="w-full px-5 py-4 rounded-[16px] border border-border-color bg-white text-text-dark focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all duration-300 shadow-sm"
                 placeholder="john@company.com"
               />
-              <label
-                for="email"
-                class="absolute left-5 top-10 text-stone font-semibold text-sm transition-all duration-300 peer-placeholder-shown:text-base peer-placeholder-shown:top-10 peer-placeholder-shown:text-stone/60 peer-focus:top-0 peer-focus:text-sm peer-focus:text-ember-orange -translate-y-full"
-                >Work Email</label
-              >
             </div>
           </div>
-          <div class="relative pt-6" data-aos="fade-up" data-aos-delay="700">
+          <div data-aos="fade-up" data-aos-delay="700">
+            <label for="phone" class="block font-sans text-text-dark font-semibold text-sm mb-2">Phone Number</label>
             <input
               type="tel"
               id="phone"
-              class="peer w-full px-5 py-4 rounded-[20px] border border-paper/40 bg-pearl text-graphite focus:ring-4 focus:ring-ember-orange/20 focus:border-ember-orange outline-none transition-all duration-300 shadow-sm hover:shadow-none border border-paper placeholder-transparent"
+              class="w-full px-5 py-4 rounded-[16px] border border-border-color bg-white text-text-dark focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all duration-300 shadow-sm"
               placeholder="+1 (555) 000-0000"
             />
-            <label
-              for="phone"
-              class="absolute left-5 top-10 text-stone font-semibold text-sm transition-all duration-300 peer-placeholder-shown:text-base peer-placeholder-shown:top-10 peer-placeholder-shown:text-stone/60 peer-focus:top-0 peer-focus:text-sm peer-focus:text-ember-orange -translate-y-full"
-              >Phone Number</label
-            >
           </div>
-          <div class="relative pt-6" data-aos="fade-up" data-aos-delay="800">
+          <div data-aos="fade-up" data-aos-delay="800">
+            <label for="business" class="block font-sans text-text-dark font-semibold text-sm mb-2">Business Description</label>
             <textarea
               id="business"
               rows="4"
-              class="peer w-full px-5 py-4 rounded-[20px] border border-paper/40 bg-pearl text-graphite focus:ring-4 focus:ring-ember-orange/20 focus:border-ember-orange outline-none transition-all duration-300 shadow-sm hover:shadow-none border border-paper resize-none placeholder-transparent"
+              class="w-full px-5 py-4 rounded-[16px] border border-border-color bg-white text-text-dark focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all duration-300 shadow-sm resize-none"
               placeholder="Briefly describe your company..."
             ></textarea>
-            <label
-              for="business"
-              class="absolute left-5 top-10 text-stone font-semibold text-sm transition-all duration-300 peer-placeholder-shown:text-base peer-placeholder-shown:top-10 peer-placeholder-shown:text-stone/60 peer-focus:top-0 peer-focus:text-sm peer-focus:text-ember-orange -translate-y-full"
-              >Business Description</label
-            >
           </div>
           <div data-aos="zoom-in" data-aos-delay="900">
             <button
-  type="button"
-  class="w-full bg-ember-orange hover:bg-ember-orange-link text-white font-medium text-lg py-4 rounded-[30px] transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 flex items-center justify-center gap-2 group"
->
-  <span class="relative z-10 flex items-center justify-center gap-2">
-    Send Request
-    <svg
-      class="w-5 h-5 opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M14 5l7 7m0 0l-7 7m7-7H3"
-      ></path>
-    </svg>
-  </span>
-</button>
+              type="submit"
+              class="w-full bg-brand-primary hover:bg-[#0a4659] text-white font-sans font-bold text-lg py-4 rounded-[24px] transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 flex items-center justify-center group tracking-wide"
+            >
+              <span class="relative z-10 flex items-center justify-center">
+                Send Request
+                <svg
+                  class="w-5 h-5 absolute -right-8 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+              </span>
+            </button>
           </div>
         </form>
       </div>
