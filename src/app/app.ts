@@ -1,9 +1,18 @@
 import { Component, signal, OnInit, Inject, PLATFORM_ID, HostListener } from '@angular/core';
-import { RouterOutlet, RouterLink } from '@angular/router';
+import { RouterOutlet, RouterLink, Router, NavigationEnd } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { filter } from 'rxjs/operators';
 import AOS from 'aos';
 
 import { LogoComponent } from './components/ui/logo/logo.component';
+
+export interface SocialLink {
+  id: number;
+  platform: string;
+  url: string | null;
+  is_active: boolean;
+}
 
 @Component({
   selector: 'app-root',
@@ -17,17 +26,60 @@ export class App implements OnInit {
   protected readonly isMobileMenuOpen = signal(false);
   protected readonly isLoading = signal(true);
   protected readonly isFadingOut = signal(false);
+  protected readonly socialLinks = signal<SocialLink[]>([]);
+  readonly isAdminRoute = signal(false);
+  readonly activeSection = signal<string>('home');
 
   toggleMobileMenu() {
     this.isMobileMenuOpen.update(v => !v);
   }
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private http: HttpClient,
+    private router: Router
+  ) {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: any) => {
+      const url = event.urlAfterRedirects || '';
+      this.isAdminRoute.set(url.startsWith('/admin'));
+      
+      if (url.startsWith('/gallery')) {
+        this.activeSection.set('gallery');
+      } else if (url.startsWith('/join-us')) {
+        this.activeSection.set('join-us');
+      } else if (url.includes('#about')) {
+        this.activeSection.set('about');
+      } else if (url.includes('#services')) {
+        this.activeSection.set('services');
+      } else {
+        this.activeSection.set('home');
+      }
+    });
+  }
 
   @HostListener('window:scroll')
   onWindowScroll() {
     if (isPlatformBrowser(this.platformId)) {
       this.showScrollToTop.set(window.scrollY > 500);
+
+      // ScrollSpy logic for public home sections
+      const url = this.router.url;
+      if (!url.startsWith('/gallery') && !url.startsWith('/join-us') && !url.startsWith('/admin')) {
+        const scrollPos = window.scrollY + 200; // offset for fixed header
+        
+        const aboutEl = document.getElementById('about');
+        const servicesEl = document.getElementById('services');
+        
+        if (servicesEl && scrollPos >= servicesEl.offsetTop) {
+          this.activeSection.set('services');
+        } else if (aboutEl && scrollPos >= aboutEl.offsetTop) {
+          this.activeSection.set('about');
+        } else {
+          this.activeSection.set('home');
+        }
+      }
     }
   }
 
@@ -37,7 +89,20 @@ export class App implements OnInit {
     }
   }
 
+  fetchSocialLinks() {
+    this.http.get<{ success: boolean; data: SocialLink[] }>('http://192.168.1.57:8004/api/social-links').subscribe({
+      next: (res) => {
+        this.socialLinks.set(res.data || []);
+      },
+      error: (err) => {
+        console.error('Failed to load social links', err);
+        this.socialLinks.set([]);
+      }
+    });
+  }
+
   ngOnInit() {
+    this.fetchSocialLinks();
     if (isPlatformBrowser(this.platformId)) {
       // 1. Minimum loader time of 2 seconds
       const minTimePromise = new Promise(resolve => setTimeout(resolve, 2000));

@@ -1,0 +1,89 @@
+<!-- Header -->
+<div class="mb-8 animate-[fade-in-up_0.4s_ease-out]">
+  <h1 class="text-3xl font-heading font-extrabold text-brand-primary mb-2 tracking-tight">Social Links</h1>
+  <p class="text-slate-500 text-sm">Configure outbound hyperlinks and dynamic visibility triggers for the public footer</p>
+</div>
+
+<!-- EDIT CARD -->
+<div class="bg-white border border-border-color rounded-3xl p-6 md:p-8 max-w-4xl shadow-sm animate-[fade-in-up_0.6s_ease-out]">
+  
+  @if (!isLoading()) {
+    <form [formGroup]="linksForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      
+      <div formArrayName="items" class="divide-y divide-border-color space-y-6">
+        @for (ctrl of items.controls; track ctrl; let i = $index) {
+          <div [formGroupName]="i" class="pt-6 first:pt-0 flex flex-col md:flex-row md:items-center justify-between gap-6">
+            
+            <!-- Platform Label and SVG Icon -->
+            <div class="flex items-center gap-4 w-48 flex-shrink-0">
+              <div class="w-10 h-10 rounded-xl bg-brand-secondary border border-border-color flex items-center justify-center text-text-dark">
+                @if (ctrl.get('platform')?.value === 'facebook') {
+                  <svg class="h-4.5 w-4.5 text-blue-600" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z"/></svg>
+                } @else if (ctrl.get('platform')?.value === 'linkedin') {
+                  <svg class="h-4.5 w-4.5 text-sky-600" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                } @else if (ctrl.get('platform')?.value === 'instagram') {
+                  <svg class="h-4.5 w-4.5 text-pink-600" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                } @else if (ctrl.get('platform')?.value === 'twitter' || ctrl.get('platform')?.value === 'x') {
+                  <svg class="h-4.5 w-4.5 text-text-dark" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                }
+              </div>
+              <span class="text-sm font-bold capitalize text-text-dark">
+                {{ ctrl.get('platform')?.value }}
+              </span>
+            </div>
+
+            <!-- URL Input field -->
+            <div class="flex-grow space-y-1">
+              <label class="block text-[8px] font-bold text-slate-500 uppercase tracking-widest pl-1">Target URL</label>
+              <input 
+                type="url" 
+                formControlName="url"
+                placeholder="https://..."
+                class="w-full bg-brand-secondary border border-border-color focus:border-brand-primary focus:bg-white text-text-dark rounded-xl px-4 py-2.5 text-xs outline-none transition-colors"
+              />
+            </div>
+
+            <!-- Active Visibility Switch -->
+            <div class="flex flex-col items-start gap-1 w-24">
+              <span class="text-[8px] font-bold text-slate-500 uppercase tracking-widest pl-1">Visibility</span>
+              <label class="inline-flex items-center gap-2 cursor-pointer select-none mt-1">
+                <div class="relative">
+                  <input 
+                    type="checkbox" 
+                    formControlName="is_active"
+                    class="sr-only peer"
+                  />
+                  <div class="w-9 h-5 bg-slate-200 rounded-full border border-slate-300 peer-checked:bg-brand-primary peer-checked:border-brand-primary/40 after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:rounded-full after:h-3.5 after:w-3.5 after:shadow-sm after:transition-all peer-checked:after:translate-x-4"></div>
+                </div>
+              </label>
+            </div>
+
+          </div>
+        }
+      </div>
+
+      <!-- Action Button -->
+      <div class="border-t border-border-color pt-6 flex justify-end">
+        <button 
+          type="submit"
+          [disabled]="isSaving()"
+          class="bg-brand-primary hover:bg-brand-primary/95 disabled:opacity-30 disabled:hover:bg-brand-primary text-white text-xs font-bold rounded-xl px-6 py-3.5 shadow-md hover:shadow-lg transition-all flex items-center gap-2 cursor-pointer disabled:cursor-not-allowed"
+        >
+          @if (isSaving()) { Saving Links... } @else { Save All Settings }
+        </button>
+      </div>
+
+    </form>
+  }
+
+  <!-- Loader Skeleton -->
+  @if (isLoading()) {
+    <div class="space-y-6 animate-pulse">
+      @for (i of [1, 2, 3, 4]; track i) {
+        <div class="h-14 bg-brand-secondary border border-border-color rounded-2xl w-full"></div>
+      }
+      <div class="h-10 bg-brand-secondary border border-border-color rounded-xl w-32 ml-auto"></div>
+    </div>
+  }
+
+</div>

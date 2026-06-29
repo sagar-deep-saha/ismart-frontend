@@ -1,0 +1,213 @@
+<!-- Header -->
+<div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 animate-[fade-in-up_0.4s_ease-out]">
+  <div>
+    <h1 class="text-3xl font-heading font-extrabold text-brand-primary mb-2 tracking-tight">Applications</h1>
+    <p class="text-slate-500 text-sm">Review, filter, and update submitted startup registration forms</p>
+  </div>
+  <div class="bg-white border border-border-color px-4 py-2 rounded-2xl flex items-center gap-3 text-xs font-semibold shadow-sm">
+    <span class="text-slate-500">Total Filtered:</span>
+    <span class="text-brand-primary font-bold text-sm">{{ totalItems() }}</span>
+  </div>
+</div>
+
+<!-- FILTERS CARD -->
+<div class="bg-white border border-border-color rounded-3xl p-6 shadow-sm mb-8 animate-[fade-in-up_0.5s_ease-out]">
+  <form [formGroup]="filterForm" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+    
+    <!-- Search Query -->
+    <div class="space-y-1">
+      <label class="block text-[10px] font-bold text-text-dark uppercase tracking-widest pl-1">Search</label>
+      <input 
+        type="text" 
+        formControlName="search"
+        placeholder="Team name or Ref No..."
+        class="w-full bg-brand-secondary border border-border-color hover:border-slate-350 focus:border-brand-primary focus:bg-white text-text-dark rounded-xl px-4 py-2.5 text-xs outline-none transition-colors"
+      />
+    </div>
+
+    <!-- Status Filter -->
+    <div class="space-y-1">
+      <label class="block text-[10px] font-bold text-text-dark uppercase tracking-widest pl-1">Status</label>
+      <select 
+        formControlName="status"
+        class="w-full bg-brand-secondary border border-border-color hover:border-slate-350 focus:border-brand-primary focus:bg-white text-text-dark rounded-xl px-3 py-2.5 text-xs outline-none transition-colors"
+      >
+        <option value="">All Statuses</option>
+        @for (st of statuses; track st) {
+          <option [value]="st">{{ st }}</option>
+        }
+      </select>
+    </div>
+
+    <!-- Sector Filter -->
+    <div class="space-y-1">
+      <label class="block text-[10px] font-bold text-text-dark uppercase tracking-widest pl-1">Sector</label>
+      <select 
+        formControlName="sector"
+        class="w-full bg-brand-secondary border border-border-color hover:border-slate-350 focus:border-brand-primary focus:bg-white text-text-dark rounded-xl px-3 py-2.5 text-xs outline-none transition-colors"
+      >
+        <option value="">All Sectors</option>
+        @for (sec of sectors; track sec) {
+          <option [value]="sec">{{ sec }}</option>
+        }
+      </select>
+    </div>
+
+    <!-- Start Date -->
+    <div class="space-y-1">
+      <label class="block text-[10px] font-bold text-text-dark uppercase tracking-widest pl-1">From Date</label>
+      <input 
+        type="date" 
+        formControlName="startDate"
+        class="w-full bg-brand-secondary border border-border-color hover:border-slate-350 focus:border-brand-primary focus:bg-white text-text-dark rounded-xl px-3 py-2 text-xs outline-none transition-colors"
+      />
+    </div>
+
+    <!-- End Date -->
+    <div class="space-y-1">
+      <label class="block text-[10px] font-bold text-text-dark uppercase tracking-widest pl-1">To Date</label>
+      <input 
+        type="date" 
+        formControlName="endDate"
+        class="w-full bg-brand-secondary border border-border-color hover:border-slate-350 focus:border-brand-primary focus:bg-white text-text-dark rounded-xl px-3 py-2 text-xs outline-none transition-colors"
+      />
+    </div>
+
+  </form>
+  
+  <div class="mt-4 flex justify-end">
+    <button 
+      (click)="clearFilters()"
+      class="text-xs font-bold text-slate-500 hover:text-brand-primary transition-colors cursor-pointer"
+    >
+      Clear All Filters
+    </button>
+  </div>
+</div>
+
+<!-- APPLICATIONS DATA GRID -->
+<div class="bg-white border border-border-color rounded-3xl shadow-sm overflow-hidden animate-[fade-in-up_0.6s_ease-out]">
+  
+  @if (!isLoading()) {
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="bg-brand-secondary text-[10px] font-bold text-text-dark uppercase tracking-widest border-b border-border-color">
+            <th class="py-4 px-6">Reference No</th>
+            <th class="py-4 px-6">Team / Startup</th>
+            <th class="py-4 px-6">Sector</th>
+            <th class="py-4 px-6">Stage</th>
+            <th class="py-4 px-6">Status</th>
+            <th class="py-4 px-6">Submitted On</th>
+            <th class="py-4 px-6 text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-border-color bg-white">
+          @for (app of applications(); track app.id) {
+            <tr 
+              (click)="viewApplication(app.id)"
+              class="hover:bg-brand-secondary/30 cursor-pointer transition-colors group"
+            >
+              <!-- Reference No -->
+              <td class="py-4 px-6 text-sm font-mono font-bold text-brand-primary">
+                {{ app.reference_number }}
+              </td>
+              <!-- Team Name -->
+              <td class="py-4 px-6 text-sm font-semibold text-text-dark">
+                {{ app.team_name }}
+              </td>
+              <!-- Sector -->
+              <td class="py-4 px-6 text-xs font-semibold text-slate-500">
+                {{ app.sector }}
+              </td>
+              <!-- Stage -->
+              <td class="py-4 px-6 text-xs text-slate-500 font-medium">
+                {{ app.stage }}
+              </td>
+              <!-- Status Badge -->
+              <td class="py-4 px-6">
+                <span 
+                  class="text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border"
+                  [class.bg-yellow-50]="app.status.toLowerCase() === 'pending'"
+                  [class.border-yellow-200]="app.status.toLowerCase() === 'pending'"
+                  [class.text-yellow-800]="app.status.toLowerCase() === 'pending'"
+                  [class.bg-blue-50]="app.status.toLowerCase() === 'reviewed'"
+                  [class.border-blue-200]="app.status.toLowerCase() === 'reviewed'"
+                  [class.text-blue-800]="app.status.toLowerCase() === 'reviewed'"
+                  [class.bg-emerald-50]="app.status.toLowerCase() === 'accepted'"
+                  [class.border-emerald-200]="app.status.toLowerCase() === 'accepted'"
+                  [class.text-emerald-800]="app.status.toLowerCase() === 'accepted'"
+                  [class.bg-red-50]="app.status.toLowerCase() === 'rejected'"
+                  [class.border-red-200]="app.status.toLowerCase() === 'rejected'"
+                  [class.text-red-800]="app.status.toLowerCase() === 'rejected'"
+                >
+                  {{ app.status }}
+                </span>
+              </td>
+              <!-- Submit Date -->
+              <td class="py-4 px-6 text-xs font-medium text-slate-500">
+                {{ app.created_at | date:'dd MMM yyyy, h:mm a' }}
+              </td>
+              <!-- Actions -->
+              <td class="py-4 px-6 text-right" (click)="$event.stopPropagation()">
+                <a [routerLink]="['/admin/applications', app.id]" class="inline-flex items-center justify-center w-8 h-8 bg-brand-secondary hover:bg-brand-primary border border-border-color text-text-dark hover:text-white rounded-lg transition-all transform hover:scale-105 active:scale-95" title="View details">
+                  <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.43 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </a>
+              </td>
+            </tr>
+          }
+          @if (applications().length === 0) {
+            <tr>
+              <td colspan="7" class="py-12 text-center text-slate-400 font-semibold">
+                No applications match the selected filter criteria.
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- PAGINATION CONTROL BAR -->
+    @if (applications().length > 0) {
+      <div class="px-6 py-4 bg-brand-secondary/40 border-t border-border-color flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div class="text-xs text-slate-500 font-semibold">
+          Showing Page {{ currentPage() }} of {{ lastPage() }}
+        </div>
+        <div class="flex items-center gap-2">
+          <!-- Prev Button -->
+          <button 
+            [disabled]="currentPage() === 1"
+            (click)="onPageChange(currentPage() - 1)"
+            class="px-4 py-2 bg-white hover:bg-brand-secondary disabled:opacity-30 border border-border-color text-xs font-bold rounded-xl transition-all cursor-pointer disabled:cursor-not-allowed text-text-dark"
+          >
+            Previous
+          </button>
+          
+          <!-- Next Button -->
+          <button 
+            [disabled]="currentPage() === lastPage()"
+            (click)="onPageChange(currentPage() + 1)"
+            class="px-4 py-2 bg-white hover:bg-brand-secondary disabled:opacity-30 border border-border-color text-xs font-bold rounded-xl transition-all cursor-pointer disabled:cursor-not-allowed text-text-dark"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    }
+  }
+
+  <!-- Loader Skeleton -->
+  @if (isLoading()) {
+    <div class="p-6 space-y-4 animate-pulse">
+      <div class="h-10 bg-slate-100 rounded w-full"></div>
+      <div class="h-12 bg-slate-50 rounded w-full"></div>
+      <div class="h-12 bg-slate-50 rounded w-full"></div>
+      <div class="h-12 bg-slate-50 rounded w-full"></div>
+      <div class="h-12 bg-slate-50 rounded w-full"></div>
+    </div>
+  }
+
+</div>

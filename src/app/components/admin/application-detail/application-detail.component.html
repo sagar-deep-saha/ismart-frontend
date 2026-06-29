@@ -1,0 +1,463 @@
+@if (!isLoading() && application()) {
+  <!-- Top Navigation & Status Action Bar -->
+  <div class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 animate-[fade-in-up_0.4s_ease-out]">
+    <div>
+      <a routerLink="/admin/applications" class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-brand-primary transition-colors mb-3">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+        </svg>
+        Back to Applications
+      </a>
+      <div class="flex items-center gap-3">
+        <h1 class="text-3xl font-heading font-extrabold text-brand-primary tracking-tight">{{ application()?.reference_number }}</h1>
+        <span 
+          class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border shadow-sm"
+          [class.bg-yellow-50]="application()?.status === 'Pending'"
+          [class.border-yellow-200]="application()?.status === 'Pending'"
+          [class.text-yellow-800]="application()?.status === 'Pending'"
+          [class.bg-blue-50]="application()?.status === 'Reviewed'"
+          [class.border-blue-200]="application()?.status === 'Reviewed'"
+          [class.text-blue-800]="application()?.status === 'Reviewed'"
+          [class.bg-emerald-50]="application()?.status === 'Accepted'"
+          [class.border-emerald-200]="application()?.status === 'Accepted'"
+          [class.text-emerald-800]="application()?.status === 'Accepted'"
+          [class.bg-red-50]="application()?.status === 'Rejected'"
+          [class.border-red-200]="application()?.status === 'Rejected'"
+          [class.text-red-800]="application()?.status === 'Rejected'"
+        >
+          {{ application()?.status }}
+        </span>
+        <button 
+          (click)="downloadPdf()"
+          class="inline-flex items-center gap-1.5 bg-white hover:bg-brand-primary/10 border border-border-color text-xs font-bold text-text-dark hover:text-brand-primary rounded-xl px-3.5 py-1.5 transition-colors cursor-pointer shadow-sm no-print"
+        >
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+          </svg>
+          Download PDF
+        </button>
+      </div>
+    </div>
+
+    <!-- Status Editor -->
+    <div class="bg-white border border-border-color p-3 rounded-2xl flex items-center gap-3 w-full md:w-auto shadow-sm">
+      <div class="space-y-0.5">
+        <label class="block text-[8px] font-bold text-text-dark uppercase tracking-widest pl-1">Update Status</label>
+        <select 
+          [value]="selectedStatus()" 
+          (change)="onStatusChange($event)"
+          class="bg-brand-secondary border border-border-color focus:border-brand-primary focus:bg-white text-text-dark rounded-xl px-3 py-1.5 text-xs font-semibold outline-none transition-colors"
+        >
+          @for (st of statuses; track st) {
+            <option [value]="st">{{ st }}</option>
+          }
+        </select>
+      </div>
+      <button 
+        (click)="onSaveStatus()" 
+        [disabled]="isSavingStatus() || selectedStatus() === application()?.status"
+        class="bg-brand-primary hover:bg-brand-primary/95 disabled:opacity-30 disabled:hover:bg-brand-primary text-white rounded-xl px-4 py-3.5 text-xs font-bold transition-colors cursor-pointer mt-2 disabled:cursor-not-allowed shadow-md"
+      >
+        @if (isSavingStatus()) { Saving... } @else { Save Status }
+      </button>
+    </div>
+  </div>
+
+  <!-- DETAILS SECTIONS (COLLAPSIBLE ACCORDIONS) -->
+  <div class="space-y-6 animate-[fade-in-up_0.6s_ease-out]">
+    
+    <!-- 1. TEAM OVERVIEW -->
+    <div class="bg-white border border-border-color rounded-3xl overflow-hidden shadow-sm">
+      <button 
+        (click)="toggleSection('overview')"
+        class="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none hover:bg-brand-secondary/30 transition-colors"
+      >
+        <h3 class="text-base font-heading font-bold text-brand-primary flex items-center gap-3">
+          <svg class="w-5 h-5 text-brand-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.079-13.137a3 3 0 115.671 0M4.978 12.03a3 3 0 105.67 0m1.802 0a3.3 3.3 0 116.6 0M11.985 6.015a3 3 0 100-6.002 3 3 0 000 6.002z" />
+          </svg>
+          Team Overview
+        </h3>
+        <svg 
+          class="w-5 h-5 text-slate-400 transform transition-transform duration-350"
+          [class.rotate-180]="showOverview()"
+          fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+        </svg>
+      </button>
+      
+      @if (showOverview()) {
+        <div class="px-6 pb-6 pt-2 border-t border-border-color grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-sm">
+          <div>
+            <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Team Name</span>
+            <span class="font-bold text-text-dark text-base">{{ application()?.team_name }}</span>
+          </div>
+          <div>
+            <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Tagline</span>
+            <span class="font-medium text-slate-600 italic">"{{ application()?.tagline || 'Not provided' }}"</span>
+          </div>
+          <div>
+            <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Total Members</span>
+            <span class="font-bold text-text-dark">{{ application()?.member_count }}</span>
+          </div>
+          <div>
+            <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Formed Since</span>
+            <span class="font-semibold text-text-dark">{{ application()?.formed_since || 'Not specified' }}</span>
+          </div>
+          <div>
+            <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Registration Status</span>
+            <span class="font-bold text-brand-accent capitalize">{{ application()?.registration_status }}</span>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- 2. TEAM LEAD DETAILS -->
+    <div class="bg-white border border-border-color rounded-3xl overflow-hidden shadow-sm">
+      <button 
+        (click)="toggleSection('lead')"
+        class="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none hover:bg-brand-secondary/30 transition-colors"
+      >
+        <h3 class="text-base font-heading font-bold text-brand-primary flex items-center gap-3">
+          <svg class="w-5 h-5 text-brand-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+          </svg>
+          Team Lead details
+        </h3>
+        <svg 
+          class="w-5 h-5 text-slate-400 transform transition-transform duration-350"
+          [class.rotate-180]="showLead()"
+          fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+        </svg>
+      </button>
+
+      @if (showLead()) {
+        <div class="px-6 pb-6 pt-2 border-t border-border-color space-y-6 text-sm">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div>
+              <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Full Name</span>
+              <span class="font-extrabold text-text-dark text-base">{{ application()?.lead_name }}</span>
+            </div>
+            <div>
+              <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Role in Team</span>
+              <span class="font-semibold text-slate-700">{{ application()?.lead_role }}</span>
+            </div>
+            <div>
+              <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Age</span>
+              <span class="font-semibold text-slate-700">{{ application()?.lead_age }} years</span>
+            </div>
+            <div>
+              <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Gender</span>
+              <span class="font-semibold text-slate-700">{{ application()?.lead_gender }}</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div>
+              <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Phone Number</span>
+              <span class="font-mono font-bold text-text-dark">{{ application()?.lead_phone }}</span>
+            </div>
+            <div>
+              <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">WhatsApp</span>
+              <span class="font-mono font-semibold text-text-dark">{{ application()?.lead_whatsapp || 'Not provided' }}</span>
+            </div>
+            <div>
+              <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Email Address</span>
+              <span class="font-semibold text-brand-primary underline">{{ application()?.lead_email || 'Not specified' }}</span>
+            </div>
+            <div>
+              <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Education Level</span>
+              <span class="font-semibold text-slate-700">{{ application()?.lead_education }}</span>
+            </div>
+            <div class="sm:col-span-2">
+              <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Group Membership</span>
+              <div class="flex flex-wrap gap-1.5 mt-1">
+                @for (grp of application()?.lead_groups; track grp) {
+                  <span class="text-[9px] font-bold uppercase tracking-wider bg-brand-accent/10 border border-brand-accent/20 text-brand-accent px-2 py-0.5 rounded-full">
+                    {{ grp }}
+                  </span>
+                }
+                @if (application()?.lead_groups?.length === 0) {
+                  <span class="text-slate-500 italic text-xs">None selected</span>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-brand-secondary/40 p-4 border border-border-color rounded-2xl">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3 pl-1">Tripura Location</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <span class="block text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-0.5">District</span>
+                <span class="font-semibold text-text-dark">{{ application()?.lead_district }}</span>
+              </div>
+              <div>
+                <span class="block text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-0.5">Block</span>
+                <span class="font-semibold text-text-dark">{{ application()?.lead_block }}</span>
+              </div>
+              <div>
+                <span class="block text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-0.5">Village / Town</span>
+                <span class="font-semibold text-text-dark">{{ application()?.lead_village }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- 3. CORE TEAM MEMBERS -->
+    <div class="bg-white border border-border-color rounded-3xl overflow-hidden shadow-sm">
+      <button 
+        (click)="toggleSection('members')"
+        class="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none hover:bg-brand-secondary/30 transition-colors"
+      >
+        <h3 class="text-base font-heading font-bold text-brand-primary flex items-center gap-3">
+          <svg class="w-5 h-5 text-brand-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.115c0 1.047-.307 2.036-.84 2.87M9 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M9 19.128v-.003c0-1.113-.285-2.16-.786-3.07M9 19.128v.115c0 1.047-.307 2.036-.84 2.87M9 19.128A8.902 8.902 0 001.5 18a8.967 8.967 0 006.661 1.764M12 11.25a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5zm9.75 3.5a2.25 2.25 0 100-4.5 2.25 2.25 0 000 4.5zm-19.5 0a2.25 2.25 0 100-4.5 2.25 2.25 0 000 4.5z" />
+          </svg>
+          Team Members details ({{ application()?.members?.length || 0 }})
+        </h3>
+        <svg 
+          class="w-5 h-5 text-slate-400 transform transition-transform duration-350"
+          [class.rotate-180]="showMembers()"
+          fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+        </svg>
+      </button>
+
+      @if (showMembers()) {
+        <div class="px-6 pb-6 pt-2 border-t border-border-color space-y-4">
+          @for (mb of application()?.members; track mb.name; let i = $index) {
+            <div class="bg-brand-secondary/40 p-4 border border-border-color rounded-2xl relative group">
+              <div class="flex justify-between items-center mb-3 pb-2 border-b border-border-color/30">
+                <span class="text-xs font-extrabold uppercase tracking-wider text-brand-primary">Member #{{ i + 1 }}</span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+                <div>
+                  <span class="block text-[8px] font-bold text-slate-550 uppercase tracking-widest mb-0.5">Name</span>
+                  <span class="font-bold text-text-dark">{{ mb.name }}</span>
+                </div>
+                <div>
+                  <span class="block text-[8px] font-bold text-slate-550 uppercase tracking-widest mb-0.5">Role</span>
+                  <span class="font-semibold text-slate-700">{{ mb.role }}</span>
+                </div>
+                <div>
+                  <span class="block text-[8px] font-bold text-slate-550 uppercase tracking-widest mb-0.5">Age / Gender</span>
+                  <span class="font-medium text-slate-650">{{ mb.age ? mb.age + 'y / ' : '' }}{{ mb.gender || 'Not specified' }}</span>
+                </div>
+                <div>
+                  <span class="block text-[8px] font-bold text-slate-550 uppercase tracking-widest mb-0.5">Phone Number</span>
+                  <span class="font-mono font-medium text-slate-650">{{ mb.phone || 'Not provided' }}</span>
+                </div>
+                <div>
+                  <span class="block text-[8px] font-bold text-slate-550 uppercase tracking-widest mb-0.5">Education</span>
+                  <span class="font-medium text-slate-650">{{ mb.education || 'Not specified' }}</span>
+                </div>
+                <div class="sm:col-span-3">
+                  <span class="block text-[8px] font-bold text-slate-550 uppercase tracking-widest mb-0.5">Special Groups</span>
+                  <div class="flex flex-wrap gap-1 mt-0.5">
+                    @for (grp of mb.groups; track grp) {
+                      <span class="text-[8px] font-bold uppercase bg-white border border-border-color text-brand-accent px-1.5 py-0.2 rounded">
+                        {{ grp }}
+                      </span>
+                    }
+                    @if (mb.groups?.length === 0) {
+                      <span class="text-slate-500 italic text-[10px]">None</span>
+                    }
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+          @if (application()?.members?.length === 0) {
+            <p class="text-slate-500 italic text-sm pl-2">No other core team members were listed.</p>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- 4. BUSINESS & IDEA DETAILS -->
+    <div class="bg-white border border-border-color rounded-3xl overflow-hidden shadow-sm">
+      <button 
+        (click)="toggleSection('business')"
+        class="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none hover:bg-brand-secondary/30 transition-colors"
+      >
+        <h3 class="text-base font-heading font-bold text-brand-primary flex items-center gap-3">
+          <svg class="w-5 h-5 text-brand-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 .621-.504 1.125-1.125 1.125H4.875c-.621 0-1.125-.504-1.125-1.125v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.453.258-.724.258H4.874c-.272 0-.53-.093-.724-.258M21 14.15V8.706c0-1.08-.768-2.014-1.837-2.175a48.11 48 0 00-3.413-.387m0 0a48.007 48.007 0 00-7.5 0m7.5 0v1.5m-7.5-1.5a48.108 48.108 0 00-3.413.387C3.058 6.531 2.29 7.464 2.29 8.544V12.49c0 .621.504 1.125 1.125 1.125h1.547m0-7.5v1.5m2.013 7.5c-.062-.325-.094-.66-.094-1v-1.5" />
+          </svg>
+          Business & Idea Details
+        </h3>
+        <svg 
+          class="w-5 h-5 text-slate-400 transform transition-transform duration-350"
+          [class.rotate-180]="showBusiness()"
+          fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+        </svg>
+      </button>
+
+      @if (showBusiness()) {
+        <div class="px-6 pb-6 pt-2 border-t border-border-color space-y-6 text-sm">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div>
+              <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Business Sector</span>
+              <span class="font-bold text-text-dark">{{ application()?.sector }}</span>
+            </div>
+            <div>
+              <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Current Stage</span>
+              <span class="font-extrabold text-brand-primary">{{ application()?.stage }}</span>
+            </div>
+            <div>
+              <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Duration Working</span>
+              <span class="font-semibold text-slate-700">{{ application()?.duration_working }}</span>
+            </div>
+            <div>
+              <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Monthly Revenue</span>
+              <span class="font-semibold text-slate-700">{{ application()?.monthly_revenue }}</span>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <div>
+              <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Brief Description</span>
+              <p class="text-text-dark leading-relaxed bg-brand-secondary/40 p-4 border border-border-color rounded-2xl font-medium">
+                {{ application()?.description || 'No description provided' }}
+              </p>
+            </div>
+            <div>
+              <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Problem Being Solved</span>
+              <p class="text-text-dark leading-relaxed bg-brand-secondary/40 p-4 border border-border-color rounded-2xl font-medium">
+                {{ application()?.problem_solved || 'No problem details provided' }}
+              </p>
+            </div>
+            <div>
+              <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Target Customers</span>
+              <p class="text-text-dark leading-relaxed bg-brand-secondary/40 p-4 border border-border-color rounded-2xl font-medium">
+                {{ application()?.target_customers || 'No target customer details provided' }}
+              </p>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- 5. SUPPORT & preferences -->
+    <div class="bg-white border border-border-color rounded-3xl overflow-hidden shadow-sm">
+      <button 
+        (click)="toggleSection('support')"
+        class="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none hover:bg-brand-secondary/30 transition-colors"
+      >
+        <h3 class="text-base font-heading font-bold text-brand-primary flex items-center gap-3">
+          <svg class="w-5 h-5 text-brand-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 21l8.913-6.247m-8.913 1.151H6.077a2.25 2.25 0 01-2.25-2.25V5.107a2.25 2.25 0 012.25-2.25h9a2.25 2.25 0 012.25 2.25v7.458M12 9v2m0-6h.008v.008H12V5.008z" />
+          </svg>
+          Support Needed & Preferences
+        </h3>
+        <svg 
+          class="w-5 h-5 text-slate-400 transform transition-transform duration-350"
+          [class.rotate-180]="showSupport()"
+          fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+        </svg>
+      </button>
+
+      @if (showSupport()) {
+        <div class="px-6 pb-6 pt-2 border-t border-border-color space-y-6 text-sm">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Support Needed</span>
+              <div class="flex flex-wrap gap-2">
+                @for (sup of application()?.support_types; track sup) {
+                  <span class="text-xs font-bold text-brand-primary bg-brand-primary/10 border border-brand-primary/20 px-3 py-1 rounded-xl">
+                    {{ sup }}
+                  </span>
+                }
+              </div>
+            </div>
+            <div>
+              <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Preferred Languages</span>
+              <div class="flex flex-wrap gap-2">
+                @for (lang of application()?.languages; track lang) {
+                  <span class="text-xs font-bold text-success bg-success/10 border border-success/20 px-3 py-1 rounded-xl">
+                    {{ lang }}
+                  </span>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div>
+              <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Previous Govt support</span>
+              <span class="font-semibold text-text-dark">
+                {{ application()?.prev_gov_support ? 'Yes' : 'No' }}
+                @if (application()?.prev_gov_support_details) {
+                  <span class="text-slate-650 block mt-1.5 font-medium bg-brand-secondary/40 p-3 rounded-xl border border-border-color">
+                    Details: {{ application()?.prev_gov_support_details }}
+                  </span>
+                }
+              </span>
+            </div>
+            <div>
+              <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Device Access (Smartphone)</span>
+              <span class="font-semibold text-text-dark capitalize">{{ application()?.device_access }}</span>
+            </div>
+            <div>
+              <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Hearing channel</span>
+              <span class="font-semibold text-text-dark">{{ application()?.how_heard }}</span>
+            </div>
+            <div>
+              <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Preferred Contact Time</span>
+              <span class="font-semibold text-text-dark">{{ application()?.preferred_contact_time }}</span>
+            </div>
+            <div class="sm:col-span-2">
+              <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Pitch Deck / Business Plan</span>
+              @if (application()?.pitch_deck_path) {
+                <div class="mt-2 flex items-center gap-3">
+                  <a 
+                    [href]="application()?.pitch_deck_path" 
+                    target="_blank" 
+                    class="inline-flex items-center gap-2 bg-brand-secondary hover:bg-brand-primary/10 border border-border-color text-xs font-bold text-text-dark hover:text-brand-primary rounded-xl px-4 py-2.5 transition-colors cursor-pointer shadow-sm"
+                  >
+                    <svg class="w-4.5 h-4.5 text-rose-600" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5z" />
+                    </svg>
+                    Download Pitch Deck (PDF)
+                  </a>
+                  <span class="text-xs text-slate-500 truncate max-w-xs" [title]="application()?.pitch_deck_path">File: {{ application()?.pitch_deck_path }}</span>
+                </div>
+              } @else {
+                <span class="text-slate-500 italic block mt-1">No pitch deck uploaded</span>
+              }
+            </div>
+          </div>
+
+          @if (application()?.additional_message) {
+            <div>
+              <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Additional Message</span>
+              <p class="text-text-dark bg-brand-secondary/40 p-4 border border-border-color rounded-2xl italic leading-relaxed">
+                "{{ application()?.additional_message }}"
+              </p>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+  </div>
+}
+
+@if (isLoading()) {
+  <div class="space-y-6 animate-pulse">
+    <div class="h-10 bg-slate-200 rounded w-1/4 mb-4"></div>
+    <div class="h-16 bg-white border border-border-color rounded-3xl w-full"></div>
+    <div class="h-32 bg-white border border-border-color rounded-3xl w-full"></div>
+    <div class="h-32 bg-white border border-border-color rounded-3xl w-full"></div>
+  </div>
+}
