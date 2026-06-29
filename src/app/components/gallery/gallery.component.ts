@@ -2,6 +2,7 @@ import { Component, OnInit, HostListener, Inject, PLATFORM_ID, signal } from '@a
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 export interface GalleryImage {
   id: number;
@@ -38,7 +39,7 @@ export class GalleryComponent implements OnInit {
 
   fetchImages() {
     this.isLoading.set(true);
-    this.http.get<{ success: boolean; data: any[] }>('http://192.168.1.57:8004/api/gallery').subscribe({
+    this.http.get<{ success: boolean; data: any[] }>(`${environment.apiUrl}/gallery`).subscribe({
       next: (res) => {
         // Only show active and sorted by sort_order
         const sorted = (res.data || [])

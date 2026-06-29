@@ -1,4 +1,4 @@
-<section class="pt-32 pb-24 relative overflow-hidden bg-slate-50 min-h-screen">
+<section class="pt-32 pb-24 relative overflow-hidden bg-surface min-h-screen">
   <!-- Abstract background shapes for premium look -->
   <div class="absolute top-0 right-0 w-[45rem] h-[45rem] bg-brand-primary/5 rounded-full blur-3xl -z-10 translate-x-1/3 -translate-y-1/3 animate-pulse-soft"></div>
   <div class="absolute bottom-0 left-0 w-[45rem] h-[45rem] bg-brand-accent/5 rounded-full blur-3xl -z-10 -translate-x-1/3 translate-y-1/3 animate-pulse-soft" style="animation-delay: 2s"></div>
@@ -12,23 +12,23 @@
         <h2 class="text-brand-primary font-heading font-bold tracking-widest uppercase text-sm">Portfolio</h2>
         <span class="w-8 h-[2px] bg-brand-primary"></span>
       </div>
-      <h1 class="text-4xl md:text-5xl font-heading font-extrabold text-text-dark mb-6 leading-tight">
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold text-text-dark mb-6 leading-tight">
         Explore Our Portfolio
       </h1>
-      <p class="text-lg text-blue-slate leading-relaxed">
+      <p class="text-xl text-text-dark/80 leading-relaxed">
         Discover the innovative startups, social enterprises, and community-driven initiatives supported by iSmart across Tripura.
       </p>
     </div>
 
     <!-- SKELETON LOADER -->
     @if (isLoading()) {
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8">
-        @for (i of [1, 2, 3, 4, 5, 6, 7, 8]; track i) {
-          <div class="bg-white p-5 rounded-[32px] border border-slate-100 shadow-sm animate-pulse flex flex-col">
-            <div class="bg-slate-200 rounded-[20px] aspect-[4/3] w-full mb-4"></div>
-            <div class="h-5 bg-slate-200 rounded w-2/3 mb-3"></div>
-            <div class="h-4 bg-slate-200 rounded w-full mb-2"></div>
-            <div class="h-4 bg-slate-200 rounded w-4/5"></div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        @for (i of [1, 2, 3, 4, 5, 6]; track i) {
+          <div class="bg-bg-alternate p-6 rounded-[24px] border border-border-color shadow-sm animate-pulse flex flex-col">
+            <div class="bg-border-color rounded-[16px] aspect-[4/3] w-full mb-5"></div>
+            <div class="h-6 bg-border-color rounded w-2/3 mb-4"></div>
+            <div class="h-4 bg-border-color rounded w-full mb-2"></div>
+            <div class="h-4 bg-border-color rounded w-4/5"></div>
           </div>
         }
       </div>
@@ -36,17 +36,17 @@
 
     <!-- EMPTY STATE -->
     @else if (images().length === 0) {
-      <div class="bg-white p-12 md:p-16 rounded-[28px] border border-slate-100 shadow-sm text-center max-w-xl mx-auto my-12" data-aos="fade-up">
-        <div class="w-16 h-16 bg-slate-50 border border-slate-100 text-slate-400 rounded-2xl flex items-center justify-center mx-auto mb-6">
+      <div class="bg-bg-alternate p-12 md:p-16 rounded-[24px] border border-border-color shadow-sm text-center max-w-xl mx-auto my-12" data-aos="fade-up">
+        <div class="w-16 h-16 bg-surface border border-border-color text-brand-primary rounded-[16px] flex items-center justify-center mx-auto mb-6">
           <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
           </svg>
         </div>
-        <h3 class="text-xl font-heading font-bold text-text-dark mb-2">No Images Found</h3>
-        <p class="text-blue-slate text-sm mb-8 leading-relaxed">
+        <h3 class="text-2xl font-heading font-bold text-text-dark mb-4">No Images Found</h3>
+        <p class="text-text-dark/80 text-lg mb-8 leading-relaxed">
           The portfolio gallery is currently empty or updates are in progress. Please check back later.
         </p>
-        <a routerLink="/" class="inline-flex items-center justify-center px-6 py-2.5 text-sm font-semibold text-white bg-brand-primary rounded-full hover:bg-brand-primary/95 shadow-md hover:shadow-lg transition-all duration-300">
+        <a routerLink="/" class="inline-flex items-center justify-center px-8 py-4 text-sm font-bold text-white bg-brand-primary rounded-[24px] hover:bg-[#0a4659] shadow-md hover:shadow-lg transition-all duration-300">
           Back to Home
         </a>
       </div>
@@ -54,27 +54,27 @@
 
     <!-- PORTFOLIO GRID -->
     @else {
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         @for (img of images(); track img.id; let idx = $index) {
           <div 
             (click)="openLightbox(idx)"
-            class="bg-white p-5 rounded-[32px] border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-500 cursor-pointer group flex flex-col justify-between"
+            class="bg-bg-alternate p-6 rounded-[24px] border border-border-color shadow-sm hover:shadow-lg hover:-translate-y-1.5 transition-all duration-500 cursor-pointer group flex flex-col justify-between"
             data-aos="fade-up"
           >
             <!-- Top: Image & Overlay -->
             <div>
               <!-- Image Frame -->
-              <div class="relative overflow-hidden rounded-[20px] aspect-[4/3] bg-slate-50 mb-4">
+              <div class="relative overflow-hidden rounded-[16px] aspect-[4/3] bg-surface mb-5">
                 <img 
                   [src]="img.image_path" 
                   [alt]="img.title || 'Portfolio Image'" 
                   loading="lazy"
-                  class="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-105"
+                  class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
                 />
                 <!-- Dark Overlay on Hover -->
-                <div class="absolute inset-0 bg-text-dark/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <div class="w-12 h-12 bg-white/20 backdrop-blur-md border border-white/30 text-white rounded-full flex items-center justify-center transform scale-75 group-hover:scale-100 transition-transform duration-300">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <div class="absolute inset-0 bg-[#08495C]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <div class="w-14 h-14 bg-white/95 shadow-lg text-brand-primary rounded-full flex items-center justify-center transform scale-75 group-hover:scale-100 transition-transform duration-300">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.637 10.637z" />
                     </svg>
                   </div>
@@ -83,7 +83,7 @@
               
               <!-- Metadata -->
               @if (img.title) {
-                <h3 class="text-base font-heading font-bold text-text-dark mb-1.5 group-hover:text-brand-primary transition-colors">
+                <h3 class="text-xl font-heading font-bold text-text-dark mb-2 group-hover:text-brand-primary transition-colors">
                   {{ img.title }}
                 </h3>
               }
@@ -91,8 +91,8 @@
 
             <!-- Bottom: Description -->
             @if (img.description) {
-              <div class="mt-auto">
-                <p class="text-xs text-blue-slate leading-relaxed line-clamp-3">
+              <div class="mt-2">
+                <p class="text-base font-sans text-text-dark/80 leading-relaxed line-clamp-3">
                   {{ img.description }}
                 </p>
               </div>
@@ -106,7 +106,7 @@
     <div class="mt-16 text-center" data-aos="fade-up">
       <a 
         routerLink="/" 
-        class="inline-flex items-center justify-center px-8 py-3.5 text-sm font-bold text-blue-slate bg-white border border-slate-200 rounded-full hover:bg-slate-50 hover:text-text-dark hover:border-slate-300 shadow-sm hover:shadow transition-all duration-300 group"
+        class="inline-flex items-center justify-center px-10 py-4 text-sm font-bold text-brand-primary bg-surface border border-brand-primary rounded-full hover:bg-brand-primary hover:text-white shadow-sm hover:shadow-lg transition-all duration-300 group tracking-wide"
       >
         <svg class="w-4 h-4 mr-2 transition-transform duration-300 group-hover:-translate-x-1" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
