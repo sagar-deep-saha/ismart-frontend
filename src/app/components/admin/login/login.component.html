@@ -1,0 +1,112 @@
+<div class="min-h-screen bg-brand-secondary flex flex-col items-center justify-center p-4 relative overflow-hidden font-sans">
+  <!-- Glowing Background Orbs -->
+  <div class="absolute top-1/4 left-1/4 w-[35rem] h-[35rem] bg-brand-primary/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 animate-pulse-soft animate-duration-10000"></div>
+  <div class="absolute bottom-1/4 right-1/4 w-[35rem] h-[35rem] bg-brand-accent/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 animate-pulse-soft animate-duration-10000" style="animation-delay: 2s"></div>
+
+  <div class="w-full max-w-md relative z-10">
+    <!-- Header Logo / Brand -->
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center gap-2 mb-2">
+        <span class="text-3xl font-heading font-extrabold tracking-tight text-brand-primary">iSmart Admin Portal</span>
+        <!-- <span class="bg-brand-primary/10 text-brand-primary border border-brand-primary/20 text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full">
+          Admin Portal
+        </span> -->
+      </div>
+      <!-- <p class="text-sm text-slate-500">Sign in to manage team applications and resources</p> -->
+    </div>
+
+    <!-- Login Card -->
+    <div class="bg-white border border-border-color rounded-3xl p-8 shadow-xl">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        
+        <!-- Email Field -->
+        <div>
+          <label for="email" class="block text-xs font-bold text-text-dark uppercase tracking-wider mb-2">
+            Email Address
+          </label>
+          <div class="relative">
+            <input 
+              id="email" 
+              type="email" 
+              formControlName="email"
+              placeholder="name@company.com" 
+              class="w-full bg-brand-secondary border border-border-color focus:border-brand-primary focus:bg-white text-text-dark placeholder-slate-400 rounded-2xl py-3.5 pl-4 pr-10 text-sm outline-none transition-colors"
+              [class.border-red-500]="loginForm.get('email')?.touched && loginForm.get('email')?.invalid"
+            />
+            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-slate-400">
+              <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zm0 0c0 1.378-.063 2.685-.304 3.738M16.5 12a9 9 0 10-8.913 9h9.913a1.5 1.5 0 001.5-1.5V18a6 6 0 00-12 0" />
+              </svg>
+            </div>
+          </div>
+          @if (loginForm.get('email')?.touched && loginForm.get('email')?.invalid) {
+            <p class="text-red-500 text-xs mt-1.5 pl-1 font-medium">
+              @if (loginForm.get('email')?.errors?.['required']) { Email is required }
+              @if (loginForm.get('email')?.errors?.['email']) { Please enter a valid email address }
+            </p>
+          }
+        </div>
+
+        <!-- Password Field -->
+        <div>
+          <div class="flex justify-between items-center mb-2">
+            <label for="password" class="block text-xs font-bold text-text-dark uppercase tracking-wider">
+              Password
+            </label>
+          </div>
+          <div class="relative">
+            <input 
+              id="password" 
+              [type]="showPassword() ? 'text' : 'password'" 
+              formControlName="password"
+              placeholder="••••••••" 
+              class="w-full bg-brand-secondary border border-border-color focus:border-brand-primary focus:bg-white text-text-dark placeholder-slate-400 rounded-2xl py-3.5 pl-4 pr-12 text-sm outline-none transition-colors"
+              [class.border-red-500]="loginForm.get('password')?.touched && loginForm.get('password')?.invalid"
+            />
+            <!-- Visibility Toggle -->
+            <button 
+              type="button"
+              (click)="togglePasswordVisibility()"
+              class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-brand-primary focus:outline-none cursor-pointer"
+            >
+              @if (showPassword()) {
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+                </svg>
+              } @else {
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.43 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              }
+            </button>
+          </div>
+          @if (loginForm.get('password')?.touched && loginForm.get('password')?.invalid) {
+            <p class="text-red-500 text-xs mt-1.5 pl-1 font-medium">
+              @if (loginForm.get('password')?.errors?.['required']) { Password is required }
+              @if (loginForm.get('password')?.errors?.['minlength']) { Password must be at least 6 characters long }
+            </p>
+          }
+        </div>
+
+        <!-- Submit Button -->
+        <button 
+          type="submit" 
+          [disabled]="isSubmitting()"
+          class="w-full bg-brand-primary hover:bg-brand-primary/95 text-white rounded-2xl py-4 text-sm font-bold shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          @if (isSubmitting()) {
+            <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Signing In...
+          } @else {
+            Sign In
+          }
+        </button>
+
+      </form>
+    </div>
+  </div>
+</div>

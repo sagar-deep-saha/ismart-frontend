@@ -1,0 +1,182 @@
+<div class="min-h-screen bg-brand-secondary text-text-dark flex font-sans relative overflow-x-hidden">
+  
+  <!-- BACKGROUND GRADIENTS -->
+  <div class="absolute top-0 right-0 w-[45rem] h-[45rem] bg-brand-primary/5 rounded-full blur-3xl -z-10 translate-x-1/3 -translate-y-1/3 pointer-events-none"></div>
+  <div class="absolute bottom-0 left-0 w-[45rem] h-[45rem] bg-[#c9a227]/3 rounded-full blur-3xl -z-10 -translate-x-1/3 translate-y-1/3 pointer-events-none"></div>
+
+  <!-- MOBILE TOP BAR -->
+  <header class="lg:hidden fixed top-0 left-0 right-0 h-16 bg-surface border-b border-border-color flex items-center justify-between px-6 z-30">
+    <div class="flex items-center gap-2">
+      <span class="text-lg font-bold tracking-tight text-brand-primary">iSmart Admin</span>
+    </div>
+    <button 
+      (click)="toggleSidebar()" 
+      class="w-10 h-10 bg-brand-secondary border border-border-color rounded-xl flex items-center justify-center text-slate-600 hover:text-text-dark transition-colors"
+      aria-label="Toggle Navigation Sidebar"
+    >
+      @if (isSidebarOpen()) {
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+      } @else {
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
+      }
+    </button>
+  </header>
+
+  <!-- MOBILE OVERLAY BACKDROP -->
+  @if (isSidebarOpen()) {
+    <div 
+      (click)="closeSidebar()"
+      class="lg:hidden fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-40 animate-[fade-in_0.2s_ease-out]"
+    ></div>
+  }
+
+  <!-- PERSISTENT LEFT SIDEBAR -->
+  <aside 
+    class="fixed top-0 bottom-0 left-0 w-64 bg-surface border-r border-border-color flex flex-col justify-between z-50 transform lg:translate-x-0 transition-transform duration-300 ease-in-out lg:z-20"
+    [class.translate-x-0]="isSidebarOpen()"
+    [class.-translate-x-full]="!isSidebarOpen()"
+  >
+    <div>
+      <!-- Sidebar Brand Header -->
+      <div class="h-20 flex items-center justify-between px-6 border-b border-border-color">
+        <div class="flex items-center gap-2">
+          <span class="text-xl font-bold tracking-tight text-brand-primary">iSmart Admin</span>
+        </div>
+        <!-- Close Mobile Menu Button -->
+        <button 
+          (click)="closeSidebar()" 
+          class="lg:hidden w-8 h-8 hover:bg-brand-secondary rounded-lg flex items-center justify-center text-slate-500 hover:text-text-dark"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+      </div>
+
+      <!-- Navigation Links (using Absolute Paths) -->
+      <nav class="p-4 space-y-1.5 mt-4">
+        <!-- Dashboard Link -->
+        <a 
+          routerLink="/admin/dashboard" 
+          routerLinkActive="bg-brand-primary text-white" 
+          [routerLinkActiveOptions]="{ exact: true }"
+          (click)="closeSidebar()"
+          class="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-slate-650 hover:text-text-dark hover:bg-brand-secondary transition-all font-medium text-sm group"
+        >
+          <svg class="w-5 h-5 transition-transform duration-350 group-hover:scale-110" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
+          </svg>
+          Dashboard
+        </a>
+
+        <!-- Applications Link -->
+        <a 
+          routerLink="/admin/applications" 
+          routerLinkActive="bg-brand-primary text-white"
+          (click)="closeSidebar()"
+          class="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-slate-650 hover:text-text-dark hover:bg-brand-secondary transition-all font-medium text-sm group"
+        >
+          <svg class="w-5 h-5 transition-transform duration-350 group-hover:scale-110" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+          </svg>
+          Applications
+        </a>
+
+        <!-- Gallery Link -->
+        <a 
+          routerLink="/admin/gallery" 
+          routerLinkActive="bg-brand-primary text-white"
+          (click)="closeSidebar()"
+          class="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-slate-650 hover:text-text-dark hover:bg-brand-secondary transition-all font-medium text-sm group"
+        >
+          <svg class="w-5 h-5 transition-transform duration-350 group-hover:scale-110" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+          </svg>
+          Gallery Manager
+        </a>
+
+        <!-- Social Links Link -->
+        <a 
+          routerLink="/admin/social-links" 
+          routerLinkActive="bg-brand-primary text-white"
+          (click)="closeSidebar()"
+          class="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-slate-650 hover:text-text-dark hover:bg-brand-secondary transition-all font-medium text-sm group"
+        >
+          <svg class="w-5 h-5 transition-transform duration-350 group-hover:scale-110" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+          </svg>
+          Social Links
+        </a>
+      </nav>
+    </div>
+
+    <!-- Sidebar Footer / Logout -->
+    <div class="p-4 border-t border-border-color">
+      <button 
+        (click)="onLogout()"
+        class="w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-rose-600 hover:text-rose-700 hover:bg-rose-50 transition-all font-semibold text-sm group cursor-pointer"
+      >
+        <svg class="w-5 h-5 transition-transform duration-300 group-hover:-translate-x-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+        </svg>
+        Sign Out
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN WORKSPACE CONTAINER -->
+  <main class="flex-grow lg:pl-64 pt-16 lg:pt-0 min-h-screen flex flex-col relative z-10 bg-brand-secondary">
+    <div class="flex-grow p-6 md:p-10">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+
+  <!-- GLOBAL DYNAMIC TOAST CONTAINER -->
+  <div class="fixed top-4 right-4 z-[9999] flex flex-col gap-2 max-w-sm w-full pointer-events-none">
+    @for (toast of toastService.toasts(); track toast.id) {
+      <div 
+        class="pointer-events-auto p-4 rounded-2xl shadow-lg flex items-start gap-3 border transition-all duration-300 animate-[slide-in-right_0.3s_cubic-bezier(0.16,1,0.3,1)]"
+        [class.bg-emerald-50]="toast.type === 'success'"
+        [class.border-emerald-200]="toast.type === 'success'"
+        [class.text-emerald-900]="toast.type === 'success'"
+        [class.bg-rose-50]="toast.type === 'error'"
+        [class.border-rose-200]="toast.type === 'error'"
+        [class.text-rose-900]="toast.type === 'error'"
+        [class.bg-sky-50]="toast.type === 'info'"
+        [class.border-sky-200]="toast.type === 'info'"
+        [class.text-sky-900]="toast.type === 'info'"
+      >
+        <span class="flex-shrink-0 mt-0.5">
+          @if (toast.type === 'success') {
+            <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          } @else if (toast.type === 'error') {
+            <svg class="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" /></svg>
+          } @else {
+            <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 111.063.852l-.708 2.836a.75.75 0 001.063.852l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12v-.008z" /></svg>
+          }
+        </span>
+        <div class="flex-grow text-xs font-semibold leading-relaxed">
+          {{ toast.message }}
+        </div>
+        <button 
+          (click)="toastService.remove(toast.id)"
+          class="flex-shrink-0 text-slate-400 hover:text-text-dark transition-colors focus:outline-none cursor-pointer"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+      </div>
+    }
+  </div>
+
+  <!-- GLOBAL SYNC LOADER SPINNER -->
+  @if (loaderService.isLoading()) {
+    <div class="fixed inset-0 z-[10000] flex items-center justify-center bg-white/60 backdrop-blur-sm transition-all duration-300">
+      <div class="bg-white border border-border-color p-6 rounded-3xl shadow-xl flex flex-col items-center gap-4">
+        <svg class="animate-spin h-10 w-10 text-brand-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Syncing Workspace...</span>
+      </div>
+    </div>
+  }
+
+</div>
