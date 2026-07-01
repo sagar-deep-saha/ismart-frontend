@@ -18,6 +18,7 @@ export interface ContactConfig {
   careers_email: string;
   phone: string;
   address: string;
+  whatsapp_link?: string;
 }
 
 export interface SettingsData {

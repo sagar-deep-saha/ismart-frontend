@@ -124,8 +124,8 @@ export class App implements OnInit {
     this.fetchSocialLinks();
     this.fetchContactSettings();
     if (isPlatformBrowser(this.platformId)) {
-      // 1. Minimum loader time of 2 seconds
-      const minTimePromise = new Promise(resolve => setTimeout(resolve, 2000));
+      // 1. Minimum loader time of 800ms
+      const minTimePromise = new Promise(resolve => setTimeout(resolve, 800));
       
       // 2. Preload hero slider images
       const heroImages = [
@@ -155,11 +155,11 @@ export class App implements OnInit {
             offset: 100,
           });
         }, 100);
-
+ 
         // Remove loading screen from DOM after transition finishes
         setTimeout(() => {
           this.isLoading.set(false);
-        }, 1000);
+        }, 500);
       });
     } else {
       this.isLoading.set(false);

@@ -192,3 +192,15 @@ html, body {
   }
 }
 
+/* Reduce side margins on desktop screens (with a balanced margin space) */
+@media (min-width: 1280px) {
+  .max-w-7xl {
+    max-width: 90rem !important;
+  }
+}
+@media (min-width: 1536px) {
+  .max-w-7xl {
+    max-width: 98rem !important;
+  }
+}
+

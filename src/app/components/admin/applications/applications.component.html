@@ -93,12 +93,12 @@
       <table class="w-full text-left border-collapse">
         <thead>
           <tr class="bg-brand-secondary text-[10px] font-bold text-text-dark uppercase tracking-widest border-b border-border-color">
-            <th class="py-4 px-6">Reference No</th>
+            <th class="py-4 px-6 hidden lg:table-cell">Reference No</th>
             <th class="py-4 px-6">Team / Startup</th>
-            <th class="py-4 px-6">Sector</th>
-            <th class="py-4 px-6">Stage</th>
+            <th class="py-4 px-6 hidden md:table-cell">Sector</th>
+            <th class="py-4 px-6 hidden sm:table-cell">Stage</th>
             <th class="py-4 px-6">Status</th>
-            <th class="py-4 px-6">Submitted On</th>
+            <th class="py-4 px-6 hidden lg:table-cell">Submitted On</th>
             <th class="py-4 px-6 text-right">Actions</th>
           </tr>
         </thead>
@@ -108,20 +108,23 @@
               (click)="viewApplication(app.id)"
               class="hover:bg-brand-secondary/30 cursor-pointer transition-colors group"
             >
-              <!-- Reference No -->
-              <td class="py-4 px-6 text-sm font-mono font-bold text-brand-primary">
+              <!-- Reference No (desktop only) -->
+              <td class="py-4 px-6 text-sm font-mono font-bold text-brand-primary hidden lg:table-cell">
                 {{ app.reference_number }}
               </td>
-              <!-- Team Name -->
+              <!-- Team Name & inline Ref No on mobile -->
               <td class="py-4 px-6 text-sm font-semibold text-text-dark">
                 {{ app.team_name }}
+                <span class="block text-[11px] font-mono font-bold text-brand-primary lg:hidden mt-1">
+                  {{ app.reference_number }}
+                </span>
               </td>
               <!-- Sector -->
-              <td class="py-4 px-6 text-xs font-semibold text-slate-500">
+              <td class="py-4 px-6 text-xs font-semibold text-slate-500 hidden md:table-cell">
                 {{ app.sector }}
               </td>
               <!-- Stage -->
-              <td class="py-4 px-6 text-xs text-slate-500 font-medium">
+              <td class="py-4 px-6 text-xs text-slate-500 font-medium hidden sm:table-cell">
                 {{ app.stage }}
               </td>
               <!-- Status Badge -->
@@ -145,7 +148,7 @@
                 </span>
               </td>
               <!-- Submit Date -->
-              <td class="py-4 px-6 text-xs font-medium text-slate-500">
+              <td class="py-4 px-6 text-xs font-medium text-slate-500 hidden lg:table-cell">
                 {{ app.created_at | date:'dd MMM yyyy, h:mm a' }}
               </td>
               <!-- Actions -->

@@ -23,7 +23,8 @@ export class ContactSettingsComponent implements OnInit {
       business_email: ['', [Validators.email]],
       careers_email: ['', [Validators.email]],
       phone: ['', [Validators.maxLength(255)]],
-      address: ['', [Validators.maxLength(1000)]]
+      address: ['', [Validators.maxLength(1000)]],
+      whatsapp_link: ['', [Validators.maxLength(500)]]
     });
   }
 
@@ -40,7 +41,8 @@ export class ContactSettingsComponent implements OnInit {
             business_email: res.data.contact.business_email,
             careers_email: res.data.contact.careers_email,
             phone: res.data.contact.phone,
-            address: res.data.contact.address
+            address: res.data.contact.address,
+            whatsapp_link: res.data.contact.whatsapp_link
           });
         }
         this.isLoading.set(false);

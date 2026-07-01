@@ -1,7 +1,7 @@
 <div class="min-h-screen flex flex-col bg-white font-sans text-slate-900 scroll-smooth antialiased selection:bg-brand-primary/30 overflow-x-hidden">
   <!-- Loading Screen -->
   @if (isLoading()) {
-    <div [class.opacity-0]="isFadingOut()" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-brand-secondary transition-opacity duration-1000 pointer-events-none">
+    <div [class.opacity-0]="isFadingOut()" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-brand-secondary transition-opacity duration-500 pointer-events-none">
       <div class="relative flex flex-col items-center">
         <!-- Logo with soft breathing animation -->
         <div class="animate-pulse-soft mb-12">
@@ -26,7 +26,7 @@
        [class.scale-[1.02]]="!isFadingOut()"
        [class.translate-y-8]="!isFadingOut()"
        [class.blur-[2px]]="!isFadingOut()"
-       class="flex flex-col flex-grow w-full bg-white transition-all duration-1000 ease-out">
+       class="flex flex-col flex-grow w-full bg-white transition-all duration-500 ease-out">
   <!-- Navbar -->
   @if (!isAdminRoute()) {
     <nav class="fixed w-full z-50 bg-white shadow-lg border-b border-silver transition-all duration-300">
