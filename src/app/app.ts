@@ -27,6 +27,12 @@ export class App implements OnInit {
   protected readonly isLoading = signal(true);
   protected readonly isFadingOut = signal(false);
   protected readonly socialLinks = signal<SocialLink[]>([]);
+  protected readonly contactSettings = signal<any>({
+    business_email: 'Business.ismart@tripura.cloud',
+    careers_email: 'careers.ismart@tripura.cloud',
+    phone: '9101378960 / 8294464656',
+    address: 'Jagatpur Kalibari Road (Opposite Roodraksh Kritisha), GB Bazar, Agartala- 799005, Tripura'
+  });
   readonly isAdminRoute = signal(false);
   readonly activeSection = signal<string>('home');
 
@@ -101,8 +107,22 @@ export class App implements OnInit {
     });
   }
 
+  fetchContactSettings() {
+    this.http.get<{ success: boolean; data: any }>('http://192.168.1.57:8004/api/settings/contact').subscribe({
+      next: (res) => {
+        if (res.success && res.data) {
+          this.contactSettings.set(res.data);
+        }
+      },
+      error: (err) => {
+        console.error('Failed to load contact settings', err);
+      }
+    });
+  }
+
   ngOnInit() {
     this.fetchSocialLinks();
+    this.fetchContactSettings();
     if (isPlatformBrowser(this.platformId)) {
       // 1. Minimum loader time of 2 seconds
       const minTimePromise = new Promise(resolve => setTimeout(resolve, 2000));

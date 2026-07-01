@@ -13,11 +13,19 @@ export interface SmtpConfig {
   from_email: string;
 }
 
+export interface ContactConfig {
+  business_email: string;
+  careers_email: string;
+  phone: string;
+  address: string;
+}
+
 export interface SettingsData {
   admin: { name: string; email: string };
   smtp: SmtpConfig;
   smtp_configured: boolean;
   notification_emails: string[];
+  contact: ContactConfig;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -30,6 +38,10 @@ export class SettingsService {
 
   updateSmtp(payload: Partial<SmtpConfig>): Observable<{ success: boolean; message: string }> {
     return this.http.put<{ success: boolean; message: string }>(`${API_URL}/api/admin/settings/smtp`, payload);
+  }
+
+  updateContact(payload: Partial<ContactConfig>): Observable<{ success: boolean; message: string }> {
+    return this.http.put<{ success: boolean; message: string }>(`${API_URL}/api/admin/settings/contact`, payload);
   }
 
   updateNotifications(emails: string[]): Observable<{ success: boolean; message: string }> {

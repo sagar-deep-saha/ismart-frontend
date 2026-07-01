@@ -6,7 +6,7 @@
   </div>
   <button 
     (click)="openUploadModal()"
-    class="bg-brand-primary hover:bg-brand-primary/95 text-white rounded-2xl px-5 py-3.5 text-xs font-bold shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2 cursor-pointer"
+    class="bg-brand-primary hover:bg-brand-primary/95 text-white rounded-lg px-5 py-3.5 text-xs font-bold shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2 cursor-pointer"
   >
     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -19,7 +19,7 @@
 @if (!isLoading()) {
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-[fade-in-up_0.6s_ease-out]">
     @for (img of images(); track img.id) {
-      <div class="bg-white border border-border-color rounded-3xl overflow-hidden shadow-sm flex flex-col group hover:shadow-md transition-shadow">
+      <div class="bg-white border border-border-color rounded-xl overflow-hidden shadow-sm flex flex-col group hover:shadow-md transition-shadow">
         
         <!-- Image Preview Container -->
         <div class="h-56 relative bg-brand-secondary overflow-hidden">
@@ -100,7 +100,7 @@
   </div>
 
   @if (images().length === 0) {
-    <div class="bg-white border border-border-color rounded-3xl p-12 text-center shadow-sm max-w-lg mx-auto">
+    <div class="bg-white border border-border-color rounded-xl p-12 text-center shadow-sm max-w-lg mx-auto">
       <svg class="w-12 h-12 text-slate-350 mx-auto mb-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5z" />
       </svg>
@@ -108,7 +108,7 @@
       <p class="text-xs text-slate-500 leading-relaxed mb-6 font-medium">Add screenshots or site photos to showcase on the public landing page gallery block.</p>
       <button 
         (click)="openUploadModal()"
-        class="bg-brand-primary hover:bg-brand-primary/95 text-white rounded-2xl px-5 py-3.5 text-xs font-bold cursor-pointer transition-colors shadow-sm"
+        class="bg-brand-primary hover:bg-brand-primary/95 text-white rounded-lg px-5 py-3.5 text-xs font-bold cursor-pointer transition-colors shadow-sm"
       >
         Upload First Image
       </button>
@@ -120,7 +120,7 @@
 @if (isLoading()) {
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-pulse">
     @for (i of [1, 2, 3]; track i) {
-      <div class="bg-white border border-border-color rounded-3xl h-96 overflow-hidden">
+      <div class="bg-white border border-border-color rounded-xl h-96 overflow-hidden">
         <div class="h-56 bg-slate-100"></div>
         <div class="p-6 space-y-3">
           <div class="h-5 bg-slate-100 rounded w-2/3"></div>
@@ -139,7 +139,7 @@
     <div (click)="closeUploadModal()" class="absolute inset-0 bg-slate-900/20 backdrop-blur-sm"></div>
     
     <!-- Modal Card -->
-    <div class="bg-white border border-border-color w-full max-w-lg rounded-3xl shadow-xl relative z-10 overflow-hidden animate-[fade-in-up_0.3s_ease-out]">
+    <div class="bg-white border border-border-color w-full max-w-lg rounded-xl shadow-xl relative z-10 overflow-hidden animate-[fade-in-up_0.3s_ease-out]">
       <!-- Header -->
       <div class="px-6 py-5 border-b border-border-color flex justify-between items-center bg-brand-secondary/40">
         <h3 class="text-lg font-heading font-extrabold text-brand-primary">Upload Showcase Image</h3>
@@ -160,7 +160,7 @@
             [value]="uploadTitle()"
             (input)="uploadTitle.set($any($event.target).value)"
             placeholder="e.g. Smart Room Automation Setup"
-            class="w-full bg-brand-secondary border border-border-color focus:border-brand-primary focus:bg-white text-text-dark placeholder-slate-400 rounded-xl px-4 py-3 text-xs outline-none transition-colors"
+            class="w-full bg-brand-secondary border border-border-color focus:border-brand-primary focus:bg-white text-text-dark placeholder-slate-400 rounded-md px-4 py-3 text-xs outline-none transition-colors"
           />
         </div>
 
@@ -172,7 +172,7 @@
             [value]="uploadDescription()"
             (input)="uploadDescription.set($any($event.target).value)"
             placeholder="Provide a concise description of what the showcase image displays..."
-            class="w-full bg-brand-secondary border border-border-color focus:border-brand-primary focus:bg-white text-text-dark placeholder-slate-400 rounded-xl px-4 py-3 text-xs outline-none transition-colors"
+            class="w-full bg-brand-secondary border border-border-color focus:border-brand-primary focus:bg-white text-text-dark placeholder-slate-400 rounded-md px-4 py-3 text-xs outline-none transition-colors"
           ></textarea>
         </div>
 
@@ -181,7 +181,7 @@
           <label class="block text-[10px] font-bold text-text-dark uppercase tracking-widest pl-1">Select File(s)</label>
           
           <div class="flex items-center gap-4">
-            <label class="bg-brand-secondary hover:bg-brand-primary/10 border border-border-color text-text-dark hover:text-brand-primary text-xs font-bold rounded-xl px-4 py-3 cursor-pointer transition-colors flex items-center gap-2">
+            <label class="bg-brand-secondary hover:bg-brand-primary/10 border border-border-color text-text-dark hover:text-brand-primary text-xs font-bold rounded-md px-4 py-3 cursor-pointer transition-colors flex items-center gap-2">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
               </svg>
@@ -199,9 +199,9 @@
 
           <!-- Multiple Previews Grid -->
           @if (previewUrls().length > 0) {
-            <div class="mt-4 grid grid-cols-3 gap-3 border border-border-color rounded-2xl p-3 bg-brand-secondary/30">
+            <div class="mt-4 grid grid-cols-3 gap-3 border border-border-color rounded-lg p-3 bg-brand-secondary/30">
               @for (url of previewUrls(); track $index; let idx = $index) {
-                <div class="relative group aspect-square rounded-xl overflow-hidden bg-brand-secondary border border-border-color">
+                <div class="relative group aspect-square rounded-md overflow-hidden bg-brand-secondary border border-border-color">
                   <img [src]="url" alt="Selected Preview" class="w-full h-full object-cover" />
                   <button 
                     (click)="removeSelectedFile(idx)"
@@ -223,14 +223,14 @@
       <div class="px-6 py-4 border-t border-border-color bg-brand-secondary/40 flex justify-end gap-3">
         <button 
           (click)="closeUploadModal()"
-          class="bg-white hover:bg-brand-secondary border border-border-color text-text-dark px-4 py-2.5 rounded-xl text-xs font-bold transition-colors cursor-pointer"
+          class="bg-white hover:bg-brand-secondary border border-border-color text-text-dark px-4 py-2.5 rounded-md text-xs font-bold transition-colors cursor-pointer"
         >
           Cancel
         </button>
         <button 
           (click)="onUploadSubmit()"
           [disabled]="isUploading() || selectedFiles.length === 0"
-          class="bg-brand-primary hover:bg-brand-primary/95 text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md hover:shadow-lg transition-colors cursor-pointer flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed"
+          class="bg-brand-primary hover:bg-brand-primary/95 text-white px-5 py-2.5 rounded-md text-xs font-bold shadow-md hover:shadow-lg transition-colors cursor-pointer flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           @if (isUploading()) {
             <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -254,7 +254,7 @@
     <div (click)="closeEditModal()" class="absolute inset-0 bg-slate-900/20 backdrop-blur-sm"></div>
     
     <!-- Modal Card -->
-    <div class="bg-white border border-border-color w-full max-w-lg rounded-3xl shadow-xl relative z-10 overflow-hidden animate-[fade-in-up_0.3s_ease-out]">
+    <div class="bg-white border border-border-color w-full max-w-lg rounded-xl shadow-xl relative z-10 overflow-hidden animate-[fade-in-up_0.3s_ease-out]">
       <!-- Header -->
       <div class="px-6 py-5 border-b border-border-color flex justify-between items-center bg-brand-secondary/40">
         <h3 class="text-lg font-heading font-extrabold text-brand-primary">Edit Showcase Image Details</h3>
@@ -275,7 +275,7 @@
             [value]="editTitle()"
             (input)="editTitle.set($any($event.target).value)"
             placeholder="e.g. Smart Room Automation Setup"
-            class="w-full bg-brand-secondary border border-border-color focus:border-brand-primary focus:bg-white text-text-dark placeholder-slate-400 rounded-xl px-4 py-3 text-xs outline-none transition-colors"
+            class="w-full bg-brand-secondary border border-border-color focus:border-brand-primary focus:bg-white text-text-dark placeholder-slate-400 rounded-md px-4 py-3 text-xs outline-none transition-colors"
           />
         </div>
 
@@ -287,7 +287,7 @@
             [value]="editDescription()"
             (input)="editDescription.set($any($event.target).value)"
             placeholder="Provide a description of the image content..."
-            class="w-full bg-brand-secondary border border-border-color focus:border-brand-primary focus:bg-white text-text-dark placeholder-slate-400 rounded-xl px-4 py-3 text-xs outline-none transition-colors"
+            class="w-full bg-brand-secondary border border-border-color focus:border-brand-primary focus:bg-white text-text-dark placeholder-slate-400 rounded-md px-4 py-3 text-xs outline-none transition-colors"
           ></textarea>
         </div>
       </div>
@@ -296,14 +296,14 @@
       <div class="px-6 py-4 border-t border-border-color bg-brand-secondary/40 flex justify-end gap-3">
         <button 
           (click)="closeEditModal()"
-          class="bg-white hover:bg-brand-secondary border border-border-color text-text-dark px-4 py-2.5 rounded-xl text-xs font-bold transition-colors cursor-pointer"
+          class="bg-white hover:bg-brand-secondary border border-border-color text-text-dark px-4 py-2.5 rounded-md text-xs font-bold transition-colors cursor-pointer"
         >
           Cancel
         </button>
         <button 
           (click)="onEditSubmit()"
           [disabled]="isSavingEdit() || !editTitle().trim()"
-          class="bg-brand-primary hover:bg-brand-primary/95 text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md hover:shadow-lg transition-colors cursor-pointer flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed"
+          class="bg-brand-primary hover:bg-brand-primary/95 text-white px-5 py-2.5 rounded-md text-xs font-bold shadow-md hover:shadow-lg transition-colors cursor-pointer flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           @if (isSavingEdit()) {
             <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

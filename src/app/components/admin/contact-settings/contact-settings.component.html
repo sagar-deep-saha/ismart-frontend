@@ -1,0 +1,86 @@
+<!-- Header -->
+<div class="mb-8 animate-[fade-in-up_0.4s_ease-out]">
+  <h1 class="text-3xl font-heading font-extrabold text-brand-primary mb-2 tracking-tight">Contact Settings</h1>
+  <p class="text-slate-500 text-sm">Update the contact information displayed in the "Get In Touch" section of the public footer</p>
+</div>
+
+<!-- EDIT CARD -->
+<div class="bg-white border border-border-color rounded-xl p-6 md:p-8 max-w-4xl shadow-sm animate-[fade-in-up_0.6s_ease-out]">
+  
+  @if (!isLoading()) {
+    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Business Email -->
+        <div class="space-y-1">
+          <label class="block text-[10px] font-bold text-text-dark uppercase tracking-widest pl-1">General Queries Email</label>
+          <input 
+            type="email" 
+            formControlName="business_email"
+            placeholder="e.g. business@example.com"
+            class="w-full bg-brand-secondary border border-border-color focus:border-brand-primary focus:bg-white text-text-dark rounded-md px-4 py-3 text-sm outline-none transition-colors"
+          />
+        </div>
+
+        <!-- Careers Email -->
+        <div class="space-y-1">
+          <label class="block text-[10px] font-bold text-text-dark uppercase tracking-widest pl-1">Careers Email</label>
+          <input 
+            type="email" 
+            formControlName="careers_email"
+            placeholder="e.g. careers@example.com"
+            class="w-full bg-brand-secondary border border-border-color focus:border-brand-primary focus:bg-white text-text-dark rounded-md px-4 py-3 text-sm outline-none transition-colors"
+          />
+        </div>
+
+        <!-- Phone Number -->
+        <div class="space-y-1 md:col-span-2">
+          <label class="block text-[10px] font-bold text-text-dark uppercase tracking-widest pl-1">Phone Number(s)</label>
+          <input 
+            type="text" 
+            formControlName="phone"
+            placeholder="e.g. 9101378960 / 8294464656"
+            class="w-full bg-brand-secondary border border-border-color focus:border-brand-primary focus:bg-white text-text-dark rounded-md px-4 py-3 text-sm outline-none transition-colors"
+          />
+        </div>
+
+        <!-- Address -->
+        <div class="space-y-1 md:col-span-2">
+          <label class="block text-[10px] font-bold text-text-dark uppercase tracking-widest pl-1">Full Address</label>
+          <textarea 
+            rows="3"
+            formControlName="address"
+            placeholder="e.g. Jagatpur Kalibari Road..."
+            class="w-full bg-brand-secondary border border-border-color focus:border-brand-primary focus:bg-white text-text-dark rounded-md px-4 py-3 text-sm outline-none transition-colors"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Action Button -->
+      <div class="border-t border-border-color pt-6 flex justify-end">
+        <button 
+          type="submit"
+          [disabled]="isSaving()"
+          class="bg-brand-primary hover:bg-brand-primary/95 disabled:opacity-30 disabled:hover:bg-brand-primary text-white text-xs font-bold rounded-lg px-6 py-3.5 shadow-md hover:shadow-lg transition-all flex items-center gap-2 cursor-pointer disabled:cursor-not-allowed"
+        >
+          @if (isSaving()) { Saving... } @else { Save Contact Settings }
+        </button>
+      </div>
+
+    </form>
+  }
+
+  <!-- Loader Skeleton -->
+  @if (isLoading()) {
+    <div class="space-y-6 animate-pulse">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="h-12 bg-brand-secondary border border-border-color rounded-md w-full"></div>
+        <div class="h-12 bg-brand-secondary border border-border-color rounded-md w-full"></div>
+      </div>
+      <div class="h-12 bg-brand-secondary border border-border-color rounded-md w-full"></div>
+      <div class="h-24 bg-brand-secondary border border-border-color rounded-md w-full"></div>
+      <div class="h-10 bg-brand-secondary border border-border-color rounded-lg w-32 ml-auto"></div>
+    </div>
+  }
+
+</div>

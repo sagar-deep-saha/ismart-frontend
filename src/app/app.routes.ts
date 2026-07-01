@@ -42,10 +42,17 @@ export const routes: Routes = [
       {
         path: 'social-links',
         loadComponent: () => import('./components/admin/social-links/social-links.component').then(m => m.SocialLinksComponent)
+      },
+      {
+        path: 'contact-settings',
+        loadComponent: () => import('./components/admin/contact-settings/contact-settings.component').then(m => m.ContactSettingsComponent)
+      },
+      {
+        path: 'settings',
+        loadComponent: () => import('./components/admin/settings/settings.component').then(m => m.SettingsComponent)
       }
     ]
   },
   
   { path: '**', redirectTo: '' }
 ];
-

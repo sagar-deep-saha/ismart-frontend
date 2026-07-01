@@ -44,6 +44,14 @@ export class AuthService {
     this.router.navigate(['/admin/login']);
   }
 
+  forgotPasswordSendOtp(email: string): Observable<{ success: boolean; message: string }> {
+    return this.http.post<{ success: boolean; message: string }>(`${API_URL}/api/admin/forgot-password/otp`, { email });
+  }
+
+  forgotPasswordReset(email: string, otp: string, password: string, password_confirmation: string): Observable<{ success: boolean; message: string }> {
+    return this.http.post<{ success: boolean; message: string }>(`${API_URL}/api/admin/forgot-password/reset`, { email, otp, password, password_confirmation });
+  }
+
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
   }
